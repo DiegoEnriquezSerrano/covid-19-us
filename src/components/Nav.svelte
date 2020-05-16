@@ -11,7 +11,7 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
 	<div class="navbar-brand">
 	  <a href="/" class="navbar-item">
-		  <img src="logo.jpg" alt="virus">
+		  Virus
 		</a>
 		<span class="navbar-burger" class:is-active={isOpen} on:click={toggleNav} aria-label="menu" aria-expanded="false">
 			<span aria-hidden="true"></span>
