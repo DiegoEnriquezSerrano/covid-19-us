@@ -20,7 +20,6 @@ import CovidChart from '../components/CovidChart.svelte';
 import TableContainer from '../components/TableContainer.svelte';
 
 export let usStats;
-console.log(usStats);
 
 </script>
 
@@ -34,6 +33,6 @@ console.log(usStats);
 	</div>
 </div>
 
-<CovidStat />
+<CovidStat {...usStats}/>
 <CovidChart />
 <TableContainer />
