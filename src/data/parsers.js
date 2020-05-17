@@ -3,19 +3,83 @@ import moment from 'moment';
 
 function usStats(data) {
   const [usStatRaw] = data;
+  return parseStats(usStatRaw);
+}
 
+function stateStats(state,data) {
+  const stateStatRaw = data.find(d => d.state === state);
+  return parseStats(stateStatRaw);
+}
+
+function historicUs(historicData) {
+  return parseHistoric(historicData);
+}
+
+function parseHistoric(historicData) {
+  return [
+    {
+      label: 'Cases',
+      key: 'positive',
+      color: 'rbg(100,0,200)'
+    },
+    {
+      label: 'Recovered',
+      key: 'recovered',
+      color: 'rgb(100,100,200)'
+    },
+    {
+      label: 'Total tested',
+      key: 'totalTestResults',
+      color: 'rgb(10,30,100)'
+    },
+    {
+      label: 'Hospitalized',
+      key: 'hospitalizedCurrently',
+      color: 'rgb(20,100,230)'
+    },
+    {
+      label: 'Deaths',
+      key: 'death',
+      color: 'rgb(255,99,132)'
+    }
+  ].reduce((prev,next) => {
+    if (historicData.filter(d => d[next.key] !== null).length > 4) {
+      prev.push(parseChart(historicData, next.key, next.label, next.color))
+    }
+    return prev;
+  }, []);
+}
+
+function parseChart(historicData, key, label, color) {
+  const chartData = historicData.map(data => {
+    return {
+      x: moment(data.date, 'YYYYMMDD'),
+      y: data[key] || 0
+    }
+  });
   return {
-    cases:        format.number(usStatRaw.positive),
-    deaths:       format.number(usStatRaw.death),
-    recovered:    format.number(usStatRaw.recovered),
-    ventilator:   format.number(usStatRaw.onVentilatorCurrently),
-    hospitalized: format.number(usStatRaw.hospitalized),
-    icu:          format.number(usStatRaw.inIcuCurrently),
-    tested:       format.number(usStatRaw.totalTestResults),
-    updated:      moment(usStatRaw.lastModified).format('LLLL')
+    label,
+    data: chartData,
+    fill: false,
+    borderColor: color
+  }
+}
+
+function parseStats(rawStats){
+  return {
+    cases:        format.number(rawStats.positive),
+    deaths:       format.number(rawStats.death),
+    recovered:    format.number(rawStats.recovered),
+    ventilator:   format.number(rawStats.onVentilatorCurrently),
+    hospitalized: format.number(rawStats.hospitalized),
+    icu:          format.number(rawStats.inIcuCurrently),
+    tested:       format.number(rawStats.totalTestResults),
+    updated:      moment(rawStats.lastModified).format('LLLL')
   }
 }
 
 export default {
   usStats,
+  stateStats,
+  historicUs,
 };

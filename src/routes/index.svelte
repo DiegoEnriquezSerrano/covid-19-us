@@ -5,7 +5,8 @@
   export async function preload() {
     try {
       const usStats = await requests.usStats();
-      return { usStats };
+      const historic = await requests.historicUs();
+      return { historic, usStats };
     } catch(e) {
       this.error(500, "There was an error while trying to contact the network, please try again in a few minutes.");
       return;
@@ -21,6 +22,7 @@ import CovidChart from '../components/CovidChart.svelte';
 import TableContainer from '../components/TableContainer.svelte';
 
 export let usStats;
+export let historic;
 
 </script>
 

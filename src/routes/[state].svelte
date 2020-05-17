@@ -1,21 +1,22 @@
 <script context="module">
 
   import stateNames from '../data/stateNames.js';
+  import requests from '../data/requests.js';
 
   export async function preload(page) {
-    const state = page.params['state'];
+    const state = page.params['state'].toUpperCase();
     if (stateNames.find(s => s.abbreviation === state) === undefined) {
-      this.error(404, "state not found")
+      this.error(404, "state not found");
       return;
-    }
-
-    try { 
-      return {state: page.params['state']}
+    };
+    try {
+      const stateStats = await requests.stateStatsApiCall(state);
+      return {state, stateStats};
     } catch(e) {
       this.error(500, "There was an error while trying to contact the network, please try again in a few minutes.");
       return;
-    }
-  }
+    };
+  };
 
 </script>
 
@@ -25,6 +26,7 @@
   import CovidChart from '../components/CovidChart.svelte';
   import TableContainer from '../components/TableContainer.svelte';
   export let state;
+  export let stateStats;
 
 </script>
 
@@ -38,5 +40,5 @@
 	</div>
 </div>
 
-<CovidStat />
+<CovidStat {...stateStats} />
 <CovidChart />
