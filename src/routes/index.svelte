@@ -7,7 +7,8 @@
       const usStats = await requests.usStats();
       return { usStats };
     } catch(e) {
-      
+      this.error(500, "There was an error while trying to contact the network, please try again in a few minutes.");
+      return;
     }
   }
 

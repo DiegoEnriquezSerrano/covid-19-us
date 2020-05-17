@@ -9,10 +9,13 @@
       return;
     }
 
-    return {
-      state: page.params['state']
+    try { 
+      return {state: page.params['state']}
+    } catch(e) {
+      this.error(500, "There was an error while trying to contact the network, please try again in a few minutes.");
+      return;
     }
-  };
+  }
 
 </script>
 
