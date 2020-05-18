@@ -1,5 +1,6 @@
 import format from './format';
 import moment from 'moment';
+import stateNames from './stateNames';
 
 function usStats(data) {
   const [usStatRaw] = data;
@@ -69,8 +70,21 @@ function parseChart(historicData, key, label, color) {
     data: chartData,
     fill: false,
     borderColor: color
-  }
-}
+  };
+};
+
+function statesTable(rawStats) {
+  return rawStats.map((d) => {
+    let fullStateName = stateNames.find((n) => n.abbreviation === d.state).name;
+    return {
+      deaths: d.death,
+      cases: d.positive,
+      tested: d.totalTestResults,
+      state: d.state,
+      fullStateName
+    };
+  });
+};
 
 function parseStats(rawStats){
   return {
@@ -82,12 +96,13 @@ function parseStats(rawStats){
     icu:          format.number(rawStats.inIcuCurrently),
     tested:       format.number(rawStats.totalTestResults),
     updated:      moment(rawStats.lastModified).format('LLLL')
-  }
-}
+  };
+};
 
 export default {
   usStats,
   stateStats,
   historicUs,
   historicState,
+  statesTable,
 };

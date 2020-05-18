@@ -6,8 +6,10 @@
     try {
       const usStats = await requests.usStats();
       const historic = await requests.historicUs();
-      return { historic, usStats };
+      const stateData = await requests.statesData();
+      return { historic, usStats, stateData };
     } catch(e) {
+      console.log(e);
       this.error(500, "There was an error while trying to contact the network, please try again in a few minutes.");
       return;
     }
@@ -23,8 +25,9 @@ import TableContainer from '../components/TableContainer.svelte';
 
 export let usStats;
 export let historic;
+export let stateData
 
-console.log(historic);
+console.log(stateData)
 
 </script>
 
