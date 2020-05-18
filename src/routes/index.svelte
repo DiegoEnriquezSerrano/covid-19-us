@@ -24,6 +24,8 @@ import TableContainer from '../components/TableContainer.svelte';
 export let usStats;
 export let historic;
 
+console.log(historic);
+
 </script>
 
 <svelte:head>
@@ -37,5 +39,5 @@ export let historic;
 </div>
 
 <CovidStat {...usStats}/>
-<CovidChart />
+<CovidChart historicData={historic} title="US Covid-19" />
 <TableContainer />

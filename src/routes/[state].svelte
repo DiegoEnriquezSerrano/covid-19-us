@@ -9,11 +9,15 @@
       this.error(404, "state not found");
       return;
     };
+
+    const fullStateName = stateNames.find(s => s.abbreviation === state).name;
+
     try {
       const stateStats = await requests.stateStatsApiCall(state);
-      return {state, stateStats};
+      const historic = await requests.historicState(state)
+      return {state: fullStateName, stateStats, historic};
     } catch(e) {
-      this.error(500, "There was an error while trying to contact the network, please try again in a few minutes.");
+      console.log(e);
       return;
     };
   };
@@ -27,6 +31,7 @@
   import TableContainer from '../components/TableContainer.svelte';
   export let state;
   export let stateStats;
+  export let historic;
 
 </script>
 
@@ -41,4 +46,4 @@
 </div>
 
 <CovidStat {...stateStats} />
-<CovidChart />
+<CovidChart historicData={historic} title="Covid 19 - {state}" />
