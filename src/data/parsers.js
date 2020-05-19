@@ -77,9 +77,9 @@ function statesTable(rawStats) {
   return rawStats.map((d) => {
     let fullStateName = stateNames.find((n) => n.abbreviation === d.state).name;
     return {
-      deaths: d.death,
-      cases: d.positive,
-      tested: d.totalTestResults,
+      deaths: d.death.toLocaleString(),
+      cases: d.positive.toLocaleString(),
+      tested: d.totalTestResults.toLocaleString(),
       state: d.state,
       fullStateName
     };
